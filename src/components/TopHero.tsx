@@ -12,7 +12,7 @@ const TopHeroContainer = styled.div<{image: string}>`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    height: 20vh;
     background-image: url(${props => props.image});
     background-size: cover;
     background-position: center;
@@ -45,11 +45,19 @@ const TopHeroContent = styled.div`
 const TopHeroTitle = styled.h1`
     font-size: 3rem;
     margin-bottom: 1rem;
+    @media (max-width: 768px) {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
 `;
 
 const TopHeroDescription = styled.p`
     font-size: 1.5rem;
     margin-bottom: 2rem;
+    @media (max-width: 768px) {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+    }
 `;
 
 const TopHero = ({title, description, image}: TopHeroProps) => {
