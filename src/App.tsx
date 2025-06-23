@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import { useContext } from 'react';
 import { LocationContext } from './contexts/LocationProvider';
+import DomRouter from './DomRouter';
 
 
 function App() {
@@ -18,9 +19,7 @@ function App() {
 
   return (
     <div className="App">
-      <span>Hello</span>
-      <span>{location?.lat}</span>
-      <span>{location?.lang}</span>
+      <DomRouter />
     </div>
   );
 }
