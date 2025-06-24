@@ -1,9 +1,8 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { useContext } from 'react';
 import { LocationContext } from './contexts/LocationProvider';
-import DomRouter from './DomRouter';
+import { Outlet } from 'react-router-dom';
 
 
 function App() {
@@ -19,7 +18,7 @@ function App() {
 
   return (
     <div className="App">
-      <DomRouter />
+      <Outlet />
     </div>
   );
 }

@@ -1,23 +1,27 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import LocationProvider from './contexts/LocationProvider';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import reportWebVitals from "./reportWebVitals";
+import LocationProvider from "./contexts/LocationProvider";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import DomRouter from "./DomRouter";
+import { Provider as ReduxProvider } from "react-redux";
+import store from "./store";
 
 const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <LocationProvider>
-        <App />
-      </LocationProvider>
-    </QueryClientProvider>
+    <ReduxProvider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <LocationProvider>
+          <DomRouter />
+        </LocationProvider>
+      </QueryClientProvider>
+    </ReduxProvider>
   </React.StrictMode>
 );
 

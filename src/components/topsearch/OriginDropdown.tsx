@@ -9,6 +9,7 @@ interface AirportOption {
   code: string;
   city: string;
   country: string;
+  entityid: string;
 }
 
 interface OriginDropdownProps {
@@ -42,6 +43,7 @@ const fetchAirportsByLocation = async (lat: number, lng: number): Promise<Airpor
       code: curr.navigation.relevantFlightParams.skyId,
       city: curr.presentation.title,
       country: curr.presentation.subtitle,
+      entityid: curr.navigation.relevantFlightParams.entityId
     });
   }
   // Add nearby airports
@@ -54,6 +56,7 @@ const fetchAirportsByLocation = async (lat: number, lng: number): Promise<Airpor
           code: item.navigation.relevantFlightParams.skyId,
           city: item.presentation.title,
           country: item.presentation.subtitle,
+          entityid: item.navigation.relevantFlightParams.entityId
         });
       }
     });

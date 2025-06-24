@@ -13,10 +13,41 @@ import OriginDropdown from "./OriginDropdown";
 import DestinationDropdown from "./DestinationDropdown";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setTripClass,
+  setTripType,
+  setOriginAirport,
+  setDestinationAirport,
+  setDepartureDate,
+  setReturnDate,
+} from "../../store/slices/TopSearchSlice";
+
+import { RootState, AppDispatch } from "../../store";
 
 interface TopSearchFormProps {
   autoSubmit: boolean;
   filters?: [];
+}
+
+interface TripClassOption {
+  label: string;
+  value: string;
+}
+
+interface TripType {
+  label: string;
+  value: string;
+}
+
+interface AirportOption {
+  label: string;
+  value: string;
+  code: string;
+  city: string;
+  country: string;
+  entityid: string;
 }
 
 const FormContainer = styled.div`
@@ -49,6 +80,9 @@ const FilterContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const TravelPrePlanContainer = styled.div`
@@ -56,6 +90,10 @@ const TravelPrePlanContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
+  gap: 8px;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const TravelPlanContainer = styled.div`
@@ -68,46 +106,114 @@ const TravelPlanContainer = styled.div`
   }
 `;
 
-// Sample options for the multiselect
-const sampleOptions = [
+const TravelTripTypeContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const tripClassOptions: Array<TripClassOption> = [
   { label: "Economy", value: "economy" },
   { label: "Business", value: "business" },
   { label: "First Class", value: "first" },
   { label: "Premium Economy", value: "premium" },
 ];
 
-const TopSearchForm = ({ autoSubmit, filters }: TopSearchFormProps) => {
+const tripTypeOptions: Array<TripType> = [
+  { label: "Oneway", value: "oneway" },
+  { label: "Round Trip", value: "roundtrip" },
+];
+
+const TopSearchForm: React.FC<TopSearchFormProps> = ({
+  autoSubmit,
+  filters,
+}: TopSearchFormProps) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  const topsearchState = useSelector((state: RootState) => state.topSearch);
+
   const handleSubmit = () => {
-    console.log("submit");
+    navigate("/search");
   };
 
-  // State for selected options
-  const [selectedClasses, setSelectedClasses] = useState<
-    typeof sampleOptions
-  >([]);
-  const [selectedClasses2, setSelectedClasses2] = useState<any>({
-    label: "Economy",
-    value: "economy",
-  });
-  
   let todayDate = new Date();
-  const [departureDate, setDepartureDate] = useState<Date|null>(todayDate);
-  const [returnDate, setReturnDate] = useState<Date|null>(todayDate);
-   
+
+  const handleTripType = (option: TripType) => {
+    dispatch(setTripType(option));
+  };
+
+  const handleTripClass = (option: TripClassOption) => {
+    dispatch(setTripClass(option));
+  };
+
+  const handleOriginAirportChange = (option: AirportOption | null) => {
+    if (option) dispatch(setOriginAirport(option));
+  };
+
+  const handleDestinationAirportChange = (option: AirportOption | null) => {
+    if (option) dispatch(setDestinationAirport(option));
+  };
+
+  const handleDepartureDateChange = (date: Date | null) => {
+    if (date) dispatch(setDepartureDate(date.toLocaleDateString("en-US")));
+  };
+
+  const handleReturnDateChange = (date: Date | null) => {
+    if (date) dispatch(setReturnDate(date.toLocaleDateString("en-US")));
+  };
+
   return (
     <FormContainer>
       <h1>TopSearchForm</h1>
       <Form>
         <TravelPrePlanContainer>
-          <OriginDropdown onChange={(selected) => console.log(selected)} />
-          <DestinationDropdown
-            onChange={(selected) => console.log(`destination>>`, selected)}
+          <TravelTripTypeContainer>
+            {/** trip type */}
+            <SingleSelect
+              options={tripTypeOptions}
+              selected={topsearchState.tripType}
+              onChange={handleTripType}
+              placeholder="Select trip type"
+            />
+          </TravelTripTypeContainer>
+
+          {/** class */}
+          <SingleSelect
+            options={tripClassOptions}
+            selected={topsearchState.tripClass}
+            onChange={handleTripClass}
+            placeholder="Select class(es)"
           />
-          <DatePicker selected={departureDate} onChange={(date) => setDepartureDate(date)} />
-          <DatePicker selected={returnDate} onChange={(date) => setReturnDate(date)} />
         </TravelPrePlanContainer>
-        <TravelPlanContainer>Travel Planer</TravelPlanContainer>
-        <FilterContainer>
+        <TravelPlanContainer>
+          <OriginDropdown
+            onChange={handleOriginAirportChange}
+            value={topsearchState.originAirport}
+          />
+          <DestinationDropdown
+            onChange={handleDestinationAirportChange}
+            value={topsearchState.destinationAirport}
+          />
+          <DatePicker
+            selected={
+              topsearchState.departureDate
+                ? new Date(topsearchState.departureDate)
+                : null
+            }
+            onChange={(date) => handleDepartureDateChange(date)}
+          />
+          {topsearchState.tripType?.value !== "oneway" && (
+            <DatePicker
+              selected={
+                topsearchState.returnDate
+                  ? new Date(topsearchState.returnDate)
+                  : null
+              }
+              onChange={(date) => handleReturnDateChange(date)}
+            />
+          )}
+        </TravelPlanContainer>
+        {/*<FilterContainer>
           <FilterDropdown label="Test">
             <Multiselect
               options={sampleOptions}
@@ -125,7 +231,7 @@ const TopSearchForm = ({ autoSubmit, filters }: TopSearchFormProps) => {
               placeholder="Select class(es)"
             />
           </FilterDropdown>
-        </FilterContainer>
+        </FilterContainer>*/}
       </Form>
       {!autoSubmit && (
         <Button type="submit" onClick={handleSubmit}>

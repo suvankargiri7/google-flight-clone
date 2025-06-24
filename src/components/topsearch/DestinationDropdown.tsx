@@ -9,6 +9,7 @@ interface AirportOption {
   code: string;
   city: string;
   country: string;
+  entityid: string;
 }
 
 interface DestinationDropdownProps {
@@ -41,6 +42,7 @@ const fetchAirports = async (): Promise<AirportOption[]> => {
               code: item.navigation.relevantFlightParams.skyId,
               city: item.presentation.title,
               country: item.presentation.subtitle,
+              entityid: item.navigation.relevantFlightParams.entityId
             });
           }
         });
