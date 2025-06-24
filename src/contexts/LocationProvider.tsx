@@ -3,8 +3,8 @@ import useGeoLocation from "../hooks/useGeoLocation";
 
 interface LocationContextType {
     location: {
-        lat: string;
-        lang: string;
+        lat: number;
+        lang: number;
     } | null;
     error: string | null;
     isLoading: boolean;

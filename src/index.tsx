@@ -4,15 +4,20 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import LocationProvider from './contexts/LocationProvider';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <LocationProvider>
-      <App />
-    </LocationProvider>
+    <QueryClientProvider client={queryClient}>
+      <LocationProvider>
+        <App />
+      </LocationProvider>
+    </QueryClientProvider>
   </React.StrictMode>
 );
 

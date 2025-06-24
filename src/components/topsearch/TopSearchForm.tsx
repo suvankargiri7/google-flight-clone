@@ -4,11 +4,15 @@
  * @method onDestinationChange, onOriginChange, onFlightTypeChange
  *
  */
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import FilterDropdown, { FilterType } from "../filters";
 import Multiselect from "../filters/types/Multiselect";
 import SingleSelect from "../filters/types/SingleSelect";
+import OriginDropdown from "./OriginDropdown";
+import DestinationDropdown from "./DestinationDropdown";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 interface TopSearchFormProps {
   autoSubmit: boolean;
@@ -37,7 +41,6 @@ const Button = styled.button`
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
 `;
 
@@ -48,6 +51,23 @@ const FilterContainer = styled.div`
   justify-content: center;
 `;
 
+const TravelPrePlanContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+`;
+
+const TravelPlanContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
+
 // Sample options for the multiselect
 const sampleOptions = [
   { label: "Economy", value: "economy" },
@@ -56,20 +76,37 @@ const sampleOptions = [
   { label: "Premium Economy", value: "premium" },
 ];
 
-
 const TopSearchForm = ({ autoSubmit, filters }: TopSearchFormProps) => {
   const handleSubmit = () => {
     console.log("submit");
   };
 
   // State for selected options
-  const [selectedClasses, setSelectedClasses] = React.useState<typeof sampleOptions>([]);
-  const [selectedClasses2, setSelectedClasses2] = React.useState<any>({ label: "Economy", value: "economy" });
-
+  const [selectedClasses, setSelectedClasses] = useState<
+    typeof sampleOptions
+  >([]);
+  const [selectedClasses2, setSelectedClasses2] = useState<any>({
+    label: "Economy",
+    value: "economy",
+  });
+  
+  let todayDate = new Date();
+  const [departureDate, setDepartureDate] = useState<Date|null>(todayDate);
+  const [returnDate, setReturnDate] = useState<Date|null>(todayDate);
+   
   return (
     <FormContainer>
       <h1>TopSearchForm</h1>
       <Form>
+        <TravelPrePlanContainer>
+          <OriginDropdown onChange={(selected) => console.log(selected)} />
+          <DestinationDropdown
+            onChange={(selected) => console.log(`destination>>`, selected)}
+          />
+          <DatePicker selected={departureDate} onChange={(date) => setDepartureDate(date)} />
+          <DatePicker selected={returnDate} onChange={(date) => setReturnDate(date)} />
+        </TravelPrePlanContainer>
+        <TravelPlanContainer>Travel Planer</TravelPlanContainer>
         <FilterContainer>
           <FilterDropdown label="Test">
             <Multiselect
@@ -88,7 +125,6 @@ const TopSearchForm = ({ autoSubmit, filters }: TopSearchFormProps) => {
               placeholder="Select class(es)"
             />
           </FilterDropdown>
-    
         </FilterContainer>
       </Form>
       {!autoSubmit && (

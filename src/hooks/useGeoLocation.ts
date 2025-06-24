@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 
 interface GeolocationPosition {
-  lat: string;
-  lang: string;
+  lat: number;
+  lang: number;
 }
 
 const useGeoLocation = () => {
