@@ -2693,9 +2693,7 @@ const fetchFlights = async (passObject: SearchParams): Promise<any[]> => {
 };
 
 const Search: React.FC<{}> = () => {
-  const [searchParams] = useSearchParams();
   const topsearchState = useSelector((state: RootState) => state.topSearch);
-  console.log("search parameters", topsearchState);
 
   const {
     data: any = [],

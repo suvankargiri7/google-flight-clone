@@ -1,4 +1,4 @@
-# Getting Started with Google-Flight-Clone
+# Google-Flight-Clone
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -44,3 +44,10 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+## Available Environment Variables
+
+```
+REACT_APP_RAPIDAPI_KEY = <api_key>
+REACT_APP_RAPIDAPI_HOST = <api_host>
+```
