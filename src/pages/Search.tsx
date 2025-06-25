@@ -6,6 +6,7 @@ import { RootState } from "../store";
 import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
 import ListItem from "../components/flights/ListItem";
+import { convertToISODate } from "../helpers/function";
 
 interface SearchParams {
   originSkyId?: string;
@@ -47,7 +48,6 @@ const fetchFlights = async (passObject: SearchParams): Promise<any[]> => {
   if (!response.ok) throw new Error("Failed to fetch airports");
   const data = await response.json();
   return data;
-  //TODO: need to parse properly for listing
 };
 
 const Search: React.FC<{}> = () => {
@@ -71,7 +71,7 @@ const Search: React.FC<{}> = () => {
         originEntityId: topsearchState?.originAirport?.entityid,
         destinationEntityId: topsearchState?.destinationAirport?.entityid,
         cabinClass: topsearchState?.tripClass?.value,
-        date: topsearchState?.departureDate,
+        date: topsearchState?.departureDate? convertToISODate(topsearchState?.departureDate): '',
         sortBy: "best",
       }),
     enabled: !!topsearchState,

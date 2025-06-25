@@ -88,9 +88,6 @@ const OriginDropdown: React.FC<OriginDropdownProps> = ({
     enabled: !!location,
   });
 
-  //if (geoLoading || isLoading) return <div>Loading nearby airports...</div>;
-  //if (geoError) return <div>Error: {geoError}</div>;
-  //if (isError) return <div>Error: {error instanceof Error ? error.message : 'Unknown error'}</div>;
 
   return (
     <SingleSelect
