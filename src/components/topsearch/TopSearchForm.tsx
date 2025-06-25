@@ -7,7 +7,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import FilterDropdown, { FilterType } from "../filters";
-import Multiselect from "../filters/types/Multiselect";
 import SingleSelect from "../filters/types/SingleSelect";
 import OriginDropdown from "./OriginDropdown";
 import DestinationDropdown from "./DestinationDropdown";
@@ -53,56 +52,66 @@ interface AirportOption {
 const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: #f0f0f0;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-  margin: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  padding: 16px;
+  margin: 8px 20px;
+  width: -webkit-fill-available;
+  transition: box-shadow 0.2s;
+  @media (min-width: 600px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 32px;
+  }
 `;
+
 const Button = styled.button`
-  background-color: #000;
+  background-color: #0b57d0;
   color: #fff;
-  padding: 10px 20px;
-  border-radius: 5px;
+  padding: 12px 20px;
+  border-radius: 8px;
   cursor: pointer;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 16px;
+  width: 100%;
+  transition: background 0.2s;
+  &:hover {
+    background-color: #003580;
+  }
+  @media (min-width: 600px) {
+    width: auto;
+    margin-top: 0;
+    margin-left: 24px;
+  }
 `;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-`;
-
-const FilterContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
+  width: 100%;
+  gap: 16px;
 `;
 
 const TravelPrePlanContainer = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 8px;
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
+  gap: 12px;
+  width: 100%;
+  align-items: flex-start;
 `;
 
 const TravelPlanContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  @media (max-width: 768px) {
-    flex-direction: column;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  justify-content: center;
+  @media (min-width: 600px) {
+    flex-direction: row;
   }
 `;
 
@@ -110,6 +119,16 @@ const TravelTripTypeContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+`;
+
+const StyledDateInput = styled.input`
+  height: 30px;
+`
+
+const SearchButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const tripClassOptions: Array<TripClassOption> = [
@@ -135,8 +154,6 @@ const TopSearchForm: React.FC<TopSearchFormProps> = ({
   const handleSubmit = () => {
     navigate("/search");
   };
-
-  let todayDate = new Date();
 
   const handleTripType = (option: TripType) => {
     dispatch(setTripType(option));
@@ -164,7 +181,6 @@ const TopSearchForm: React.FC<TopSearchFormProps> = ({
 
   return (
     <FormContainer>
-      <h1>TopSearchForm</h1>
       <Form>
         <TravelPrePlanContainer>
           <TravelTripTypeContainer>
@@ -174,6 +190,7 @@ const TopSearchForm: React.FC<TopSearchFormProps> = ({
               selected={topsearchState.tripType}
               onChange={handleTripType}
               placeholder="Select trip type"
+              width={'120px'}
             />
           </TravelTripTypeContainer>
 
@@ -183,6 +200,7 @@ const TopSearchForm: React.FC<TopSearchFormProps> = ({
             selected={topsearchState.tripClass}
             onChange={handleTripClass}
             placeholder="Select class(es)"
+            width={'168px'}
           />
         </TravelPrePlanContainer>
         <TravelPlanContainer>
@@ -201,6 +219,9 @@ const TopSearchForm: React.FC<TopSearchFormProps> = ({
                 : null
             }
             onChange={(date) => handleDepartureDateChange(date)}
+            customInput={<StyledDateInput />}
+            popperPlacement="bottom-start"
+
           />
           {topsearchState.tripType?.value !== "oneway" && (
             <DatePicker
@@ -210,6 +231,7 @@ const TopSearchForm: React.FC<TopSearchFormProps> = ({
                   : null
               }
               onChange={(date) => handleReturnDateChange(date)}
+              customInput={<StyledDateInput />}
             />
           )}
         </TravelPlanContainer>
@@ -232,12 +254,14 @@ const TopSearchForm: React.FC<TopSearchFormProps> = ({
             />
           </FilterDropdown>
         </FilterContainer>*/}
+        {!autoSubmit && (
+          <SearchButtonContainer>
+            <Button type="submit" onClick={handleSubmit}>
+              Search
+            </Button>
+          </SearchButtonContainer>
+        )}
       </Form>
-      {!autoSubmit && (
-        <Button type="submit" onClick={handleSubmit}>
-          Search
-        </Button>
-      )}
     </FormContainer>
   );
 };

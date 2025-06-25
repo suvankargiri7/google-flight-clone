@@ -18,7 +18,7 @@ export const LocationContext = createContext<LocationContextType>({
 
 export const LocationProvider = ({children}: {children: React.ReactNode}) => {
     const {location, error, isLoading} = useGeoLocation();
-
+    
     return (
         <LocationContext.Provider value={{location, error, isLoading}}>
             {children}

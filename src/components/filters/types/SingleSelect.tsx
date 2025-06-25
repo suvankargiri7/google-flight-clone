@@ -30,7 +30,7 @@ const DropdownHeader = styled.div`
   cursor: pointer;
   display: flex;
   align-items: center;
-  min-height: 40px;
+  min-height: 20px;
   justify-content: space-between;
 `;
 
@@ -54,11 +54,22 @@ const DropdownListItem = styled.li`
   list-style: none;
   padding: 10px 12px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   cursor: pointer;
   &:hover {
     background: #f5f5f5;
   }
+`;
+
+const DropdownListItemLabel = styled.span`
+  display: flex;
+  justify-content: flex-start;
+  font-size: 12px;
+`;
+
+const DropdownHeaderLabel = styled.span`
+   color: #888;
+   font-size: 12px;
 `;
 
 const Radio = styled.input.attrs({ type: 'radio' })`
@@ -96,9 +107,9 @@ export function SingleSelect<T extends OptionType>({
     <DropdownContainer ref={ref} width={width}>
       <DropdownHeader onClick={() => setOpen(o => !o)}>
         {selected ? (
-          <span>{String(selected[labelKey])}</span>
+          <DropdownHeaderLabel>{String(selected[labelKey])}</DropdownHeaderLabel>
         ) : (
-          <span style={{ color: '#888' }}>{placeholder}</span>
+          <DropdownHeaderLabel>{placeholder}</DropdownHeaderLabel>
         )}
         <span style={{ marginLeft: 'auto', color: '#888' }}>{open ? '▲' : '▼'}</span>
       </DropdownHeader>
@@ -115,7 +126,7 @@ export function SingleSelect<T extends OptionType>({
                 tabIndex={-1}
                 readOnly
               />
-              {String(option[labelKey])}
+              <DropdownListItemLabel>{String(option[labelKey])}</DropdownListItemLabel>
             </DropdownListItem>
           ))}
         </DropdownList>

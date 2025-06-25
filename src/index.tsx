@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import LocationProvider from "./contexts/LocationProvider";
+import NearByAirportProvider from "./contexts/NearByAirportProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import DomRouter from "./DomRouter";
 import { Provider as ReduxProvider } from "react-redux";
@@ -18,7 +19,9 @@ root.render(
     <ReduxProvider store={store}>
       <QueryClientProvider client={queryClient}>
         <LocationProvider>
-          <DomRouter />
+          <NearByAirportProvider>
+            <DomRouter />
+          </NearByAirportProvider>
         </LocationProvider>
       </QueryClientProvider>
     </ReduxProvider>

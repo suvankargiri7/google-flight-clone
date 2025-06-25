@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
+import { getTodayDate } from "../../helpers/function";
 interface AirportOption {
   label: string;
   value: string;
@@ -31,10 +31,10 @@ interface State {
 const initialState: State = {
   originAirport: null,
   destinationAirport: null,
-  departureDate: null,
+  departureDate: getTodayDate(),
   returnDate: null,
-  tripClass: null,
-  tripType: null,
+  tripClass: {label: "Economy", value: "economy"},
+  tripType: {label: "Oneway", value: "oneway"},
 };
 
 const TopSearchSlice = createSlice({
